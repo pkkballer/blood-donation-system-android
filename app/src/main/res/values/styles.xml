@@ -17,9 +17,9 @@
         <item name="fontFamily">@font/montserrat</item>
     </style>
 
-    <style name="ButtonStyle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">20dp</item>
+    <style name="AuthThemeMaterial" parent="AppThemeMaterial">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>
