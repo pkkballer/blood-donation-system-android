@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
 
-    val bloodTypes : Array<String> = arrayOf("A+", "A-", "B+", "B-")
+    private val bloodTypes : Array<String> = arrayOf("A+", "A-", "B+", "B-")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +25,6 @@ class SignUpActivity : AppCompatActivity() {
         buttonBack.setOnClickListener {
             finish()
         }
-        
+
     }
 }

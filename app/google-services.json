@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1064937901507",
+    "firebase_url": "https://elite-span-131415.firebaseio.com",
+    "project_id": "elite-span-131415",
+    "storage_bucket": "elite-span-131415.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064937901507:android:b456d0829bfaa425914176",
+        "android_client_info": {
+          "package_name": "com.jama.kenyablooddonationsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064937901507-neb3rs9vut507t30pmqm36c5nlpnu3h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoYsIXiW_1AMHoceDzeD1hWyuRmPKivu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064937901507-neb3rs9vut507t30pmqm36c5nlpnu3h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
