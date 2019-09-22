@@ -3,6 +3,8 @@ package com.jama.kenyablooddonationsystem.ui.auth
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.jama.kenyablooddonationsystem.R
@@ -23,10 +25,25 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        loginModel.errorMap.observe(this, Observer {
+            textViewErrorMessage.text = it["message"] as CharSequence?
+            textViewErrorMessage.visibility = if (it["isError"] as Boolean) View.VISIBLE else View.GONE
+        })
+
+        loginModel.showProgress.observe(this, Observer {
+            progressBar.visibility = if (it) View.VISIBLE else View.GONE
+            buttonLogin.isEnabled = !it
+        })
+
+        loginModel.loginUser.observe(this, Observer {
+            if (it) {
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
+            }
+        })
+
         buttonLogin.setOnClickListener {
-//            val intent = Intent(this, HomeActivity::class.java)
-//            startActivity(intent)
-            loginModel.signIn("email", "pas")
+            loginModel.signIn(editTextEmail.text.toString(), editTextPassword.text.toString())
         }
 
     }

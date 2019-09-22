@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jama.kenyablooddonationsystem.R
 
-class HomeFragment : Fragment() {
+class RequestsFragement : Fragment() {
 
     private lateinit var fragementView: View
 
@@ -15,6 +16,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        fragementView = inflater.inflate(R.layout.fragment_requests, container, false)
+
+
 
         return fragementView
     }
