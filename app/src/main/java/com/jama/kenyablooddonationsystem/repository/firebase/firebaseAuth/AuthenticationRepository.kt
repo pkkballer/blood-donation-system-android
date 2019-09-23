@@ -5,14 +5,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.jama.kenyablooddonationsystem.models.SignUpModel
+import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.UserRepository
 import kotlinx.coroutines.tasks.await
 
 class AuthenticationRepository {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val databaseUserRef = database.getReference("users")
-    private val databaseDonorDetailsRef = database.getReference("donationDetails")
 
     suspend fun signIn(email: String, password: String): AuthResult? {
         return auth.signInWithEmailAndPassword(email, password).await()
@@ -23,8 +21,9 @@ class AuthenticationRepository {
         val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(signUpModel.bloodType).build()
         firebaseUser.user!!.updateProfile(profileUpdate).await()
         signUpModel.uid = firebaseUser.user!!.uid
-        databaseUserRef.child(firebaseUser.user!!.uid).setValue(signUpModel.toMap()).await()
-        databaseDonorDetailsRef.child(firebaseUser.user!!.uid).setValue(signUpModel.toDonorDetails()).await()
+        val userRepository = UserRepository(signUpModel)
+        userRepository.createUserRef()
+        userRepository.createDonorDetails()
     }
 
     fun checkIfUserExists(): Boolean {

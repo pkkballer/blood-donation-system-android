@@ -8,13 +8,17 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 
-class GetUserLocation(val context: FragmentActivity) {
+class GetUserLocation(private val context: FragmentActivity) {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    suspend fun getLastLocation(): Location? {
+    suspend fun getLastLocation(): Map<String, Double> {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        return fusedLocationClient.lastLocation.await()
+        val location = fusedLocationClient.lastLocation.await()
+        return mapOf(
+            "lat" to location.latitude,
+            "lng" to location.longitude
+        )
     }
 
 }

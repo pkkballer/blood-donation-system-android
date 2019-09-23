@@ -28,7 +28,7 @@ class RequestsFragement : Fragment() {
         }
 
         fragementView.buttonGeo.setOnClickListener {
-            requestViewModel.setupGoe()
+            requestViewModel.setupGoe(activity!!)
         }
 
         return fragementView
