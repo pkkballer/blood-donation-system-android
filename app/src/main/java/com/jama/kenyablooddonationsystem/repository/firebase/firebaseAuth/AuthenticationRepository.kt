@@ -4,8 +4,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.database.FirebaseDatabase
-import com.jama.kenyablooddonationsystem.models.SignUpModel
+import com.jama.kenyablooddonationsystem.models.UserModel
 import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.UserRepository
 import kotlinx.coroutines.tasks.await
 
@@ -17,12 +16,12 @@ class AuthenticationRepository {
         return auth.signInWithEmailAndPassword(email, password).await()
     }
 
-    suspend fun signUp(signUpModel: SignUpModel) {
-        val firebaseUser = auth.createUserWithEmailAndPassword(signUpModel.email, signUpModel.password).await()
-        val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(signUpModel.bloodType).build()
+    suspend fun signUp(userModel: UserModel) {
+        val firebaseUser = auth.createUserWithEmailAndPassword(userModel.email, userModel.password).await()
+        val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(userModel.bloodType).build()
         firebaseUser.user!!.updateProfile(profileUpdate).await()
-        signUpModel.uid = firebaseUser.user!!.uid
-        val userRepository = UserRepository(signUpModel)
+        userModel.uid = firebaseUser.user!!.uid
+        val userRepository = UserRepository(userModel)
         userRepository.createUserRef()
         userRepository.createDonorDetails()
     }

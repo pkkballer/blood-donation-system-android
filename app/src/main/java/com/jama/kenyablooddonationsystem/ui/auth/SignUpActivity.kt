@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.models.SignUpModel
+import com.jama.kenyablooddonationsystem.models.UserModel
 import com.jama.kenyablooddonationsystem.ui.home.HomeActivity
 import com.jama.kenyablooddonationsystem.viewModels.auth.AuthViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -61,7 +61,7 @@ class SignUpActivity : AppCompatActivity() {
         })
 
         buttonSignUp.setOnClickListener {
-            authViewModel.signUp(SignUpModel(
+            authViewModel.signUp(UserModel(
                 editTextFullNames.text.toString(),
                 editTextEmail.text.toString(),
                 editTextPassword.text.toString(),

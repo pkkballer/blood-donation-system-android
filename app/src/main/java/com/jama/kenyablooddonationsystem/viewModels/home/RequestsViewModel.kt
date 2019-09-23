@@ -11,11 +11,7 @@ import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.Ge
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.database.DatabaseError
 import com.firebase.geofire.GeoQueryEventListener
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
-
-
+import kotlinx.coroutines.withContext
 
 
 class RequestsViewModel: ViewModel() {
@@ -29,6 +25,8 @@ class RequestsViewModel: ViewModel() {
             val geoQuery = geofire.queryAtLocation(GeoLocation(latlang["lng"]!!, latlang["lat"]!!), 10.0)
             geoQuery.addGeoQueryEventListener(object : GeoQueryEventListener {
                 override fun onKeyEntered(key: String, location: GeoLocation) {
+                    getRequest(key)
+                    println("Geofire main ${Thread.currentThread().name}")
                     println(
                         String.format(
                             "Geofire Key %s entered the search area at [%f,%f]",
@@ -49,6 +47,13 @@ class RequestsViewModel: ViewModel() {
                     System.err.println("Geofire There was an error with this query: $error")
                 }
             })
+        }
+    }
+
+    fun getRequest(key: String) = viewModelScope.launch {
+        withContext(IO) {
+            val requestModel = geofireRepository.getRequest(key)
+
         }
     }
 

@@ -1,6 +1,6 @@
 package com.jama.kenyablooddonationsystem.models
 
-data class SignUpModel(
+data class UserModel(
     var fullNames: String = "",
     var email: String = "",
     var password: String = "",
