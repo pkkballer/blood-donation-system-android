@@ -2,6 +2,7 @@ package com.jama.kenyablooddonationsystem.repository.firebase.firebaseAuth
 
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.jama.kenyablooddonationsystem.models.SignUpModel
@@ -24,6 +25,10 @@ class AuthenticationRepository {
         val userRepository = UserRepository(signUpModel)
         userRepository.createUserRef()
         userRepository.createDonorDetails()
+    }
+
+    fun getFirebaseUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     fun checkIfUserExists(): Boolean {
