@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jama.kenyablooddonationsystem.R
@@ -42,10 +43,12 @@ class RequestsFragement : Fragment() {
         fragementView.recyclerView.apply {
             layoutManager = viewManager
             adapter = viewAdapter
+            addItemDecoration(DividerItemDecoration(fragementView.context, DividerItemDecoration.VERTICAL))
         }
 
         requestViewModel.requestModelList.observe(this, Observer {
             requestsAdapter.insertData(it)
+            recyclerView.smoothScrollToPosition(0)
         })
 
         requestViewModel.listenToRequests(activity!!)

@@ -12,7 +12,7 @@ class RequestsViewModel: ViewModel() {
 
     var repo: GeofireRepository = GeofireRepository()
     val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(repo.requestModelList) {
-        it
+        it.asReversed()
     }
     private var callListenRequests = true
 
