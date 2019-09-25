@@ -10,7 +10,7 @@ import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.ui.home.adapters.HomeActivityAdapter
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : AppCompatActivity() {
+open class HomeActivity : AppCompatActivity() {
 
     private val PERMISSIONS_REQUEST_LOCATION = 1
 
