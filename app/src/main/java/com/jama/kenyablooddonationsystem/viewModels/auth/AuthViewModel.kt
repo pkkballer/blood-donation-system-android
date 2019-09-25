@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthException
-import com.jama.kenyablooddonationsystem.models.SignUpModel
+import com.jama.kenyablooddonationsystem.models.UserModel
 import com.jama.kenyablooddonationsystem.repository.firebase.firebaseAuth.AuthenticationRepository
 import kotlinx.coroutines.launch
 import java.lang.RuntimeException
@@ -35,15 +35,15 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun signUp(signUpModel: SignUpModel) {
+    fun signUp(userModel: UserModel) {
         showProgress.value = true
         errorMap.value = mutableMapOf("message" to "", "isError" to false)
         viewModelScope.launch {
             try{
-                signUpModel.toMap().map {
+                userModel.toMap().map {
                     if (it.value == "") throw RuntimeException("Please fill in all details")
                 }
-                authRepo.signUp(signUpModel)
+                authRepo.signUp(userModel)
                 showProgress.value = false
                 checkIfUserExists()
             } catch (e: FirebaseAuthException) {

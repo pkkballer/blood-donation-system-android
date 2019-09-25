@@ -23,7 +23,8 @@
             android:background="@color/colorPrimary"
             android:elevation="7dp"
             app:tabIconTint="@color/colorBackground"
-            app:tabIndicatorColor="@color/colorBackground" />
+            app:tabIndicatorColor="@color/colorBackground"
+            app:tabRippleColor="@color/colorBackground" />
 
     </androidx.viewpager.widget.ViewPager>
 
