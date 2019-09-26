@@ -2,10 +2,9 @@ package com.jama.kenyablooddonationsystem.ui.request
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
+import com.jama.kenyablooddonationsystem.utils.LeafletWebviewClient
 import kotlinx.android.synthetic.main.activity_request.*
 
 class RequestActivity : AppCompatActivity() {
@@ -16,12 +15,12 @@ class RequestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
 
-        webview.settings.javaScriptEnabled = true
-        webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
-
-
         requestModel = intent.getSerializableExtra("request") as RequestModel
         supportActionBar!!.title = requestModel.hname
+
+        webview.settings.javaScriptEnabled = true
+        webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
+        webview.webViewClient = LeafletWebviewClient(webview, requestModel.lat, requestModel.lng)
 
         textViewBloodType.text = requestModel.bloodType
         textViewFullName.text = requestModel.recepientName
