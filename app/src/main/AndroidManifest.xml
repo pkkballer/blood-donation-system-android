@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeMaterial">
+        <activity android:name=".ui.request.Request"></activity>
         <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".ui.auth.SignUpActivity"
