@@ -16,6 +16,10 @@ class RequestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
 
+        webview.settings.javaScriptEnabled = true
+        webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
+
+
         requestModel = intent.getSerializableExtra("request") as RequestModel
         supportActionBar!!.title = requestModel.hname
 
