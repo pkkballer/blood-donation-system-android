@@ -1,5 +1,7 @@
 package com.jama.kenyablooddonationsystem.ui.home.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +9,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
+import com.jama.kenyablooddonationsystem.ui.request.RequestActivity
 import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
 import com.jama.kenyablooddonationsystem.utils.RequestsDiffUtilCallback
 import kotlinx.android.synthetic.main.requests_item.view.*
 
-class RequestsAdapter(private var requests: MutableList<RequestModel>): RecyclerView.Adapter<RequestsAdapter.RequestViewHolder>() {
+
+class RequestsAdapter(private var requests: MutableList<RequestModel>, private val context: Context): RecyclerView.Adapter<RequestsAdapter.RequestViewHolder>() {
     override fun getItemCount(): Int {
         return requests.size
     }
@@ -30,6 +34,11 @@ class RequestsAdapter(private var requests: MutableList<RequestModel>): Recycler
         holder.itemView.textViewHname.text = requests[position].hname
         holder.itemView.textViewPlace.text = requests[position].place
         holder.itemView.textViewGender.text = requests[position].gender
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, RequestActivity::class.java)
+            intent.putExtra("request", requests[position])
+            context.startActivity(intent)
+        }
     }
 
     fun insertData(newRequests: MutableList<RequestModel>) {

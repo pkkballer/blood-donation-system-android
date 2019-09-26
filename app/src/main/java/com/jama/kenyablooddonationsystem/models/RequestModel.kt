@@ -1,5 +1,7 @@
 package com.jama.kenyablooddonationsystem.models
 
+import java.io.Serializable
+
 data class RequestModel(
     var bloodType: String = "",
     var gender: String = "",
@@ -15,7 +17,7 @@ data class RequestModel(
     var uid: String = "",
     var active: Boolean = true
 
-) {
+): Serializable {
 
     fun toMap(): Map<String, Any> {
         return mapOf(

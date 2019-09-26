@@ -8,7 +8,7 @@ import com.jama.kenyablooddonationsystem.services.GetUserLocation
 import kotlinx.coroutines.launch
 
 
-class RequestsViewModel: ViewModel() {
+class RequestsFragmentViewModel: ViewModel() {
 
     var repo: GeofireRepository = GeofireRepository()
     val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(repo.requestModelList) {
