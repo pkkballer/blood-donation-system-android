@@ -20,26 +20,4 @@ data class RequestModel(
     var accepted: Int = 0
 
 
-): Serializable {
-
-    fun toMap(): Map<String, Any> {
-        return mapOf(
-            "bloodType" to bloodType,
-            "hname" to hname,
-            "imageUrl" to imageUrl,
-            "key" to key,
-            "lat" to lat,
-            "gender" to gender,
-            "lng" to lng,
-            "place" to place,
-            "uid" to uid,
-            "requestReason" to requestReason,
-            "recepientName" to recepientName,
-            "timestamp" to timestamp,
-            "active" to active,
-            "viewed" to viewed,
-            "accepted" to accepted
-        )
-    }
-
-}
+): Serializable

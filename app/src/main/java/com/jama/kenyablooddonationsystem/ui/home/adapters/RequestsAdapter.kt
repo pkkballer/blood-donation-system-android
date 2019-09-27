@@ -28,7 +28,6 @@ class RequestsAdapter(private var requests: MutableList<RequestModel>, private v
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         holder.itemView.textViewFullName.text = requests[position].recepientName
-        holder.itemView.textViewBloodType.text = requests[position].bloodType
         val dateTimeUtil = DateTimeUtil()
         holder.itemView.textViewDate.text = dateTimeUtil.getTime(requests[position].timestamp.toLong())
         holder.itemView.textViewHname.text = requests[position].hname

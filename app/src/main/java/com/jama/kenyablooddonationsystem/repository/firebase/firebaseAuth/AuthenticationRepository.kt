@@ -18,7 +18,7 @@ class AuthenticationRepository {
 
     suspend fun signUp(userModel: UserModel) {
         val firebaseUser = auth.createUserWithEmailAndPassword(userModel.email, userModel.password).await()
-        val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName(userModel.bloodType).build()
+        val profileUpdate = UserProfileChangeRequest.Builder().setDisplayName("${userModel.fullNames} (${userModel.bloodType})").build()
         firebaseUser.user!!.updateProfile(profileUpdate).await()
         userModel.uid = firebaseUser.user!!.uid
         val userRepository = UserRepository(userModel)

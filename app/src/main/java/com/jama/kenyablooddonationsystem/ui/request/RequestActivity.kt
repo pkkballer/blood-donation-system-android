@@ -13,12 +13,17 @@ import kotlinx.android.synthetic.main.activity_request.*
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.jama.kenyablooddonationsystem.viewModels.home.RequestsFragmentViewModel
 import com.jama.kenyablooddonationsystem.viewModels.home.RequestsViewModel
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
+
+
 
 
 class RequestActivity : AppCompatActivity() {
@@ -62,6 +67,27 @@ class RequestActivity : AppCompatActivity() {
             }
         })
 
+        requestsViewModel.showSnackbar.observe(this, Observer {
+            if (it.isNotBlank()) Snackbar.make(buttonAcceptRequest.rootView, it, Snackbar.LENGTH_SHORT).show()
+        })
+
+        requestsViewModel.showProgressbar.observe(this, Observer {
+            when(it) {
+                true -> {
+                    progressBar.visibility = View.VISIBLE
+                    buttonAcceptRequest.isEnabled = !it
+                }
+                else -> {
+                    progressBar.visibility = View.GONE
+                    buttonAcceptRequest.isEnabled = !it
+                }
+            }
+        })
+
+        buttonAcceptRequest.setOnClickListener {
+            requestsViewModel.acceptRequest(requestModel.key)
+        }
+
         textViewBloodType.text = requestModel.bloodType
         textViewFullName.text = requestModel.recepientName
         val dateTimeUtil = DateTimeUtil()
@@ -70,7 +96,5 @@ class RequestActivity : AppCompatActivity() {
         textViewReason.text = requestModel.requestReason
         textViewHname.text = requestModel.hname
         textViewPlace.text = requestModel.place
-
-
     }
 }
