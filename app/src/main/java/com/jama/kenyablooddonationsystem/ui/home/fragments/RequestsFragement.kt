@@ -12,19 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.ui.home.adapters.RequestsAdapter
-import com.jama.kenyablooddonationsystem.viewModels.home.RequestsViewModel
+import com.jama.kenyablooddonationsystem.viewModels.home.RequestsFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_requests.*
 import kotlinx.android.synthetic.main.fragment_requests.view.*
-import kotlinx.coroutines.withContext
 
 class RequestsFragement : Fragment() {
 
     private lateinit var fragementView: View
-    private lateinit var requestViewModel: RequestsViewModel
+    private lateinit var requestFragmentViewModel: RequestsFragmentViewModel
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var requestsAdapter: RequestsAdapter
-    private val dataSet = mutableListOf("Jama", "Mohamed", "Wardere")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +30,11 @@ class RequestsFragement : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         fragementView = inflater.inflate(R.layout.fragment_requests, container, false)
-        requestViewModel = activity.run {
-            ViewModelProviders.of(this!!)[RequestsViewModel::class.java]
+        requestFragmentViewModel = activity.run {
+            ViewModelProviders.of(this!!)[RequestsFragmentViewModel::class.java]
         }
 
-        requestsAdapter = RequestsAdapter(mutableListOf())
+        requestsAdapter = RequestsAdapter(mutableListOf(), fragementView.context)
         viewManager = LinearLayoutManager(fragementView.context)
         viewAdapter = requestsAdapter
 
@@ -46,12 +44,12 @@ class RequestsFragement : Fragment() {
             addItemDecoration(DividerItemDecoration(fragementView.context, DividerItemDecoration.VERTICAL))
         }
 
-        requestViewModel.requestModelList.observe(this, Observer {
+        requestFragmentViewModel.requestModelList.observe(this, Observer {
             requestsAdapter.insertData(it)
             recyclerView.smoothScrollToPosition(0)
         })
 
-        requestViewModel.listenToRequests(activity!!)
+        requestFragmentViewModel.listenToRequests(activity!!)
 
         return fragementView
     }

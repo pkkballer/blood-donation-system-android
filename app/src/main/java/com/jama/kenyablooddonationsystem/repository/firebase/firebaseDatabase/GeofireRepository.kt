@@ -8,12 +8,15 @@ import com.firebase.geofire.GeoQuery
 import com.firebase.geofire.GeoQueryEventListener
 import com.google.firebase.database.*
 import com.jama.kenyablooddonationsystem.models.RequestModel
+import com.jama.kenyablooddonationsystem.utils.RegexUtil
+import kotlinx.android.synthetic.main.activity_request.*
 
 
 class GeofireRepository {
 
     private val authRepository = AuthenticationRepository()
     private val database = FirebaseDatabase.getInstance()
+    private val regexUtil = RegexUtil()
     private lateinit var geoFire: GeoFire
     private lateinit var geoQuery: GeoQuery
     var requestModelList: MutableLiveData<MutableList<RequestModel>> = MutableLiveData(mutableListOf())
@@ -23,8 +26,8 @@ class GeofireRepository {
     }
 
     private fun requestRef(): DatabaseReference {
-        val bloodType = authRepository.getFirebaseUser()?.displayName
-        return database.getReference("geofire/request/$bloodType")
+        val bloodType = regexUtil.getUserBloodType(authRepository.getFirebaseUser()?.displayName.toString())
+        return database.getReference("geofire/request/${bloodType}")
     }
 
     fun getRequest(key: String) {

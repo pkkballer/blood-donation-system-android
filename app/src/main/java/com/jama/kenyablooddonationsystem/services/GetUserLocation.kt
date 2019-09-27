@@ -1,19 +1,20 @@
 package com.jama.kenyablooddonationsystem.services
 
-import android.app.Application
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
-class GetUserLocation(val fragmentActivity: FragmentActivity) {
+class GetUserLocation(private val fragmentActivity: FragmentActivity? = null, private val context: Context? = null) {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     suspend fun getLastLocation(): Map<String, Double> {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(fragmentActivity)
+        fusedLocationClient = if (fragmentActivity != null ) {
+            LocationServices.getFusedLocationProviderClient(fragmentActivity!!)
+        } else {
+            LocationServices.getFusedLocationProviderClient(context!!)
+        }
         val location = fusedLocationClient.lastLocation.await()
         return mapOf(
             "lat" to location.latitude,

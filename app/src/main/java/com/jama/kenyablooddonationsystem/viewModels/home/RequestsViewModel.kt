@@ -1,29 +1,34 @@
 package com.jama.kenyablooddonationsystem.viewModels.home
 
-import androidx.fragment.app.FragmentActivity
+import android.content.Context
+import android.view.animation.Transformation
 import androidx.lifecycle.*
-import com.jama.kenyablooddonationsystem.models.RequestModel
-import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.GeofireRepository
+import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.RequestRepository
 import com.jama.kenyablooddonationsystem.services.GetUserLocation
 import kotlinx.coroutines.launch
 
-
 class RequestsViewModel: ViewModel() {
 
-    var repo: GeofireRepository = GeofireRepository()
-    val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(repo.requestModelList) {
-        it.asReversed()
+    var latLng: MutableLiveData<Map<String, Double>> = MutableLiveData(mutableMapOf())
+    private val requestRepository = RequestRepository()
+    val showSnackbar: LiveData<String> = Transformations.map(requestRepository.showSnackbar) {
+        it
     }
-    private var callListenRequests = true
+    val showProgressbar: LiveData<Boolean> = Transformations.map(requestRepository.showProgressbar) {
+        it
+    }
 
+    fun viewedRequest(key: String) {
+        requestRepository.viewedRequest(key)
+    }
 
-    fun listenToRequests(fragmentActivity: FragmentActivity) {
+    fun acceptRequest(key: String) {
+        requestRepository.acceptRequest(key)
+    }
+
+    fun getUserLocation(context: Context) {
         viewModelScope.launch {
-            if (callListenRequests) {
-                val latlang = GetUserLocation(fragmentActivity).getLastLocation()
-                repo.listenToRequests(latlang)
-                callListenRequests = false
-            }
+           latLng.value = GetUserLocation(context = context).getLastLocation()
         }
     }
 }
