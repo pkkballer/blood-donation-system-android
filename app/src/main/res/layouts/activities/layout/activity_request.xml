@@ -115,31 +115,43 @@
                     android:id="@+id/textViewHname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline4"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewPlace" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPlace"
+                    tools:text="@tools:sample/cities" />
 
                 <TextView
                     android:id="@+id/textViewPlace"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:textColor="@color/colorOnBackground"
                     app:layout_constraintEnd_toStartOf="@+id/guideline4"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewDistance" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewDistance"
+                    tools:text="@tools:sample/cities" />
 
                 <TextView
                     android:id="@+id/textViewDistance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Distance of about 1000 meters"
+                    android:layout_marginTop="16dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline4"
                     app:layout_constraintStart_toStartOf="@+id/guideline3"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="@tools:sample/lorem" />
+
+                <Button
+                    android:id="@+id/buttonAcceptRequest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Accept Request"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                    app:layout_constraintStart_toStartOf="@+id/guideline3"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewReason" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

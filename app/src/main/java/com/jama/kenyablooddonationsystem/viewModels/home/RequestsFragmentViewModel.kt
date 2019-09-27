@@ -10,12 +10,11 @@ import kotlinx.coroutines.launch
 
 class RequestsFragmentViewModel: ViewModel() {
 
-    var repo: GeofireRepository = GeofireRepository()
+    private var repo: GeofireRepository = GeofireRepository()
     val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(repo.requestModelList) {
         it.asReversed()
     }
     private var callListenRequests = true
-
 
     fun listenToRequests(fragmentActivity: FragmentActivity) {
         viewModelScope.launch {

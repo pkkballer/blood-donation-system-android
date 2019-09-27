@@ -45,22 +45,20 @@ class RequestActivity : AppCompatActivity() {
         webview.webViewClient = LeafletWebviewClient(webview, requestModel.lat, requestModel.lng)
 
         requestsViewModel.getUserLocation(applicationContext)
+        requestsViewModel.viewedRequest(requestModel.key)
         
         requestsViewModel.latLng.observe(this, Observer {
             if (it.isNotEmpty()) {
-                println("Geofire ${it["lat"]}")
                 val loc1 = Location("").apply {
                     latitude = it["lat"]!!
                     longitude = it["lng"]!!
                 }
-
-                val loc2 = Location("").apply {
+                val loc2 = Location("").run {
                     latitude = requestModel.lat.toDouble()
                     longitude = requestModel.lng.toDouble()
+                    distanceTo(loc1)
                 }
-
-                val distanceInMeters = loc1.distanceTo(loc2)
-                textViewDistance.text = "Distance of about ${distanceInMeters.roundToInt()} meters"
+                textViewDistance.text = "Distance of about ${loc2.roundToInt()} meters"
             }
         })
 

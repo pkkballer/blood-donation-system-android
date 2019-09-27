@@ -15,7 +15,10 @@ data class RequestModel(
     var recepientName: String = "",
     var timestamp: Int = 0,
     var uid: String = "",
-    var active: Boolean = true
+    var active: Boolean = true,
+    var viewed: Int = 0,
+    var accepted: Int = 0
+
 
 ): Serializable {
 
@@ -33,7 +36,9 @@ data class RequestModel(
             "requestReason" to requestReason,
             "recepientName" to recepientName,
             "timestamp" to timestamp,
-            "active" to active
+            "active" to active,
+            "viewed" to viewed,
+            "accepted" to accepted
         )
     }
 
