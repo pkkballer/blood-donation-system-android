@@ -41,5 +41,4 @@ class EventAdapter(private var events: MutableList<EventModel>, private val cont
     }
 
     class EventViewHolder(view: View): RecyclerView.ViewHolder(view)
-
 }
