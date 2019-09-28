@@ -10,7 +10,6 @@ import com.jama.kenyablooddonationsystem.R
 
 class EventsFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
