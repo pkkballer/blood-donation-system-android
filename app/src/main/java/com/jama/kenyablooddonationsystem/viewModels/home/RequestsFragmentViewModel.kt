@@ -3,15 +3,15 @@ package com.jama.kenyablooddonationsystem.viewModels.home
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
 import com.jama.kenyablooddonationsystem.models.RequestModel
-import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.GeofireRepository
+import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.RequestRepository
 import com.jama.kenyablooddonationsystem.services.GetUserLocation
 import kotlinx.coroutines.launch
 
 
 class RequestsFragmentViewModel: ViewModel() {
 
-    private var repo: GeofireRepository = GeofireRepository()
-    val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(repo.requestModelList) {
+    private val requestRepository = RequestRepository()
+    val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(requestRepository.requestModelList) {
         it.asReversed()
     }
     private var callListenRequests = true
@@ -20,7 +20,7 @@ class RequestsFragmentViewModel: ViewModel() {
         viewModelScope.launch {
             if (callListenRequests) {
                 val latlang = GetUserLocation(fragmentActivity).getLastLocation()
-                repo.listenToRequests(latlang)
+                requestRepository.listenToRequests(latlang)
                 callListenRequests = false
             }
         }

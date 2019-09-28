@@ -29,7 +29,7 @@ class RequestsAdapter(private var requests: MutableList<RequestModel>, private v
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {
         holder.itemView.textViewFullName.text = requests[position].recepientName
         val dateTimeUtil = DateTimeUtil()
-        holder.itemView.textViewDate.text = dateTimeUtil.getTime(requests[position].timestamp.toLong())
+        holder.itemView.textViewDate.text = dateTimeUtil.getRelativeTime(requests[position].timestamp.toLong())
         holder.itemView.textViewHname.text = requests[position].hname
         holder.itemView.textViewPlace.text = requests[position].place
         holder.itemView.textViewGender.text = requests[position].gender

@@ -6,30 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
-import com.jama.kenyablooddonationsystem.services.GetUserLocation
 import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
 import com.jama.kenyablooddonationsystem.utils.LeafletWebviewClient
 import kotlinx.android.synthetic.main.activity_request.*
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.jama.kenyablooddonationsystem.viewModels.home.RequestsFragmentViewModel
-import com.jama.kenyablooddonationsystem.viewModels.home.RequestsViewModel
-import kotlinx.coroutines.*
+import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlin.math.roundToInt
-
-
-
 
 class RequestActivity : AppCompatActivity() {
 
     lateinit var requestModel: RequestModel
-    private lateinit var results: FloatArray
     private lateinit var requestsViewModel: RequestsViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -45,7 +34,6 @@ class RequestActivity : AppCompatActivity() {
         }
 
         webview.settings.javaScriptEnabled = true
-        this.applicationContext
         webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
         webview.webViewClient = LeafletWebviewClient(webview, requestModel.lat, requestModel.lng)
 
@@ -91,7 +79,7 @@ class RequestActivity : AppCompatActivity() {
         textViewBloodType.text = requestModel.bloodType
         textViewFullName.text = requestModel.recepientName
         val dateTimeUtil = DateTimeUtil()
-        textViewDate.text = dateTimeUtil.getTime(requestModel.timestamp.toLong())
+        textViewDate.text = dateTimeUtil.getRelativeTime(requestModel.timestamp.toLong())
         textViewGender.text = requestModel.gender
         textViewReason.text = requestModel.requestReason
         textViewHname.text = requestModel.hname
