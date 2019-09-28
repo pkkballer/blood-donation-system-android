@@ -17,14 +17,11 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 open class HomeActivity : AppCompatActivity() {
 
-    private val PERMISSIONS_REQUEST_LOCATION = 1
     private var authenticationRepository = AuthenticationRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-        checkIfHasPermissions()
 
         supportActionBar?.elevation = 0F
         supportActionBar?.title = authenticationRepository.getFirebaseUser()!!.displayName
@@ -35,15 +32,6 @@ open class HomeActivity : AppCompatActivity() {
         tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_event_red_24dp)
         tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_notifications_red_24dp)
         tabLayout.getTabAt(3)?.setIcon(R.drawable.ic_person_red_24dp)
-    }
-
-    fun checkIfHasPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                PERMISSIONS_REQUEST_LOCATION)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,27 +48,6 @@ open class HomeActivity : AppCompatActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSIONS_REQUEST_LOCATION -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay!
-                } else {
-                    checkIfHasPermissions()
-                }
-                return
-            }
-            else -> {
-                // Ignore all other requests.
-            }
         }
     }
 }
