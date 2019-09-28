@@ -91,7 +91,7 @@ class RequestActivity : AppCompatActivity() {
         textViewBloodType.text = requestModel.bloodType
         textViewFullName.text = requestModel.recepientName
         val dateTimeUtil = DateTimeUtil()
-        textViewDate.text = dateTimeUtil.getTime(requestModel.timestamp.toLong())
+        textViewDate.text = dateTimeUtil.getRelativeTime(requestModel.timestamp.toLong())
         textViewGender.text = requestModel.gender
         textViewReason.text = requestModel.requestReason
         textViewHname.text = requestModel.hname

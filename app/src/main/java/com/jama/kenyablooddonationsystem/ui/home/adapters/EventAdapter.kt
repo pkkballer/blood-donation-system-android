@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.EventModel
+import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
 import com.jama.kenyablooddonationsystem.utils.EventsDiffUtillCallback
 import kotlinx.android.synthetic.main.events_item.view.*
 
@@ -25,8 +27,9 @@ class EventAdapter(private var events: MutableList<EventModel>, private val cont
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         holder.itemView.textViewEventName.text = events[position].eventName
         holder.itemView.textViewPlace.text = events[position].place
-        holder.itemView.textViewDate.text = events[position].date.toString()
-//        holder.itemView.textViewEventName.text = events[position].eventName
+        val dateTimeUtil = DateTimeUtil()
+        holder.itemView.textViewDate.text = dateTimeUtil.getRelativeTime(events[position].timestamp.toLong())
+        Glide.with(context).load(events[position].imageUrl).into(holder.itemView.imageViewEvent);
     }
 
     fun insertData(newEvents: MutableList<EventModel>) {
