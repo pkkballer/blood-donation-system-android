@@ -20,11 +20,11 @@ class EventViewModel: ViewModel() {
     }
     private var callListenEvent = true
 
-    fun listenToRequests(fragmentActivity: FragmentActivity) {
+    fun listenToEvents(fragmentActivity: FragmentActivity) {
         viewModelScope.launch {
             if (callListenEvent) {
                 val latlng = GetUserLocation(fragmentActivity).getLastLocation()
-                eventRepository.listenToRequests(latlng)
+                eventRepository.listenToEvents(latlng)
                 callListenEvent = false
             }
         }
