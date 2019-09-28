@@ -7,18 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.ui.home.adapters.EventAdapter
-import com.jama.kenyablooddonationsystem.ui.home.adapters.RequestsAdapter
-import com.jama.kenyablooddonationsystem.viewModels.home.EventViewModel
-import com.jama.kenyablooddonationsystem.viewModels.home.RequestsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_events.view.*
+import com.jama.kenyablooddonationsystem.viewModels.event.EventViewModel
 import kotlinx.android.synthetic.main.fragment_requests.*
-import kotlinx.android.synthetic.main.fragment_requests.view.*
 import kotlinx.android.synthetic.main.fragment_requests.view.recyclerView
 
 class EventsFragment : Fragment() {

@@ -58,4 +58,18 @@ class EventsRepository {
         })
     }
 
+    fun viewedRequest(key: String) {
+        databaseEventsRef.child(key).runTransaction(object : Transaction.Handler {
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {}
+            override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                val event = mutableData.getValue(EventModel::class.java)
+                    ?: return Transaction.success(mutableData)
+                event.viewed++
+                mutableData.value = event
+                return Transaction.success(mutableData)
+            }
+
+        })
+    }
+
 }
