@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class RequestsFragmentViewModel: ViewModel() {
 
-//    private var repo: GeofireRepository = GeofireRepository()
     private val requestRepository = RequestRepository()
     val requestModelList: LiveData<MutableList<RequestModel>> = Transformations.map(requestRepository.requestModelList) {
         it.asReversed()

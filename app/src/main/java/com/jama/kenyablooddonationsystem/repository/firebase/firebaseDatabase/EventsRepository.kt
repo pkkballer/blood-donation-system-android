@@ -38,9 +38,9 @@ class EventsRepository {
         })
     }
 
-    fun listenToRequests(latlang: Map<String, Double>) {
+    fun listenToRequests(latlng: Map<String, Double>) {
         geoFire = GeoFire(eventGeoFireRef)
-        geoQuery = geoFire.queryAtLocation(GeoLocation(latlang["lng"]!!, latlang["lat"]!!), 10.0)
+        geoQuery = geoFire.queryAtLocation(GeoLocation(latlng["lng"]!!, latlng["lat"]!!), 10.0)
         geoQuery.addGeoQueryEventListener(object : GeoQueryEventListener {
             override fun onKeyEntered(key: String, location: GeoLocation) {
                 getEvent(key)
