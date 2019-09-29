@@ -8,13 +8,12 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
+import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.jama.kenyablooddonationsystem.R
+import com.jama.kenyablooddonationsystem.services.QrCodeAnalyzer
 import kotlinx.android.synthetic.main.activity_qrcode_scanner.*
 
 class QRCodeScannerActivity : AppCompatActivity() {
@@ -68,7 +67,18 @@ class QRCodeScannerActivity : AppCompatActivity() {
             textureView.surfaceTexture = it.surfaceTexture
         }
 
-        CameraX.bindToLifecycle(this as LifecycleOwner, preview)
+        val imageAnalysisConfig = ImageAnalysisConfig.Builder().build()
+        val imageAnalysis = ImageAnalysis(imageAnalysisConfig)
+
+        val qrCodeAnalyzer = QrCodeAnalyzer {barCodes ->
+            barCodes.forEach {
+                println("QRCODE ${it.rawValue}")
+            }
+        }
+
+        imageAnalysis.analyzer = qrCodeAnalyzer
+
+        CameraX.bindToLifecycle(this as LifecycleOwner, preview, imageAnalysis)
     }
 
     override fun onRequestPermissionsResult(

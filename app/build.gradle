@@ -63,6 +63,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.google.firebase:firebase-database:19.1.0'
+    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
 
     implementation 'com.firebase:geofire-java:3.0.0'
 
