@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeMaterial">
-        <activity android:name=".ui.event.EventActivity"></activity>
+        <activity android:name=".ui.qrCodeScanner.QRCodeScannerActivity" android:theme="@style/PopUpWindow"></activity>
+        <activity android:name=".ui.event.EventActivity" />
         <activity android:name=".ui.request.RequestActivity" />
         <activity android:name=".ui.home.HomeActivity" />
         <activity

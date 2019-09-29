@@ -1,9 +1,12 @@
 package com.jama.kenyablooddonationsystem.ui.request
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
 import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
@@ -13,12 +16,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.jama.kenyablooddonationsystem.ui.qrCodeScanner.QRCodeScannerActivity
 import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlin.math.roundToInt
 
 class RequestActivity : AppCompatActivity() {
 
-    lateinit var requestModel: RequestModel
+    private lateinit var requestModel: RequestModel
+    private var isAccepted: Boolean? = null
     private lateinit var requestsViewModel: RequestsViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -27,6 +32,8 @@ class RequestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_request)
 
         requestModel = intent.getSerializableExtra("request") as RequestModel
+        isAccepted = intent.getBooleanExtra("dsfdfdf", false)
+
         supportActionBar!!.title = requestModel.hname
 
         requestsViewModel = run {
@@ -78,6 +85,10 @@ class RequestActivity : AppCompatActivity() {
 
         buttonAcceptRequest.setOnClickListener {
             requestsViewModel.acceptRequest(requestModel.key)
+        }
+
+        buttonRegister.setOnClickListener {
+            startActivity(Intent(this, QRCodeScannerActivity::class.java))
         }
 
         textViewBloodType.text = requestModel.bloodType
