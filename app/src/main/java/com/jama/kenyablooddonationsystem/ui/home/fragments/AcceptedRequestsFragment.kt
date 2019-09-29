@@ -10,33 +10,34 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.ui.home.adapters.RequestsAdapter
-import com.jama.kenyablooddonationsystem.viewModels.home.RequestsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_requests.*
-import kotlinx.android.synthetic.main.fragment_requests.view.*
 
-class RequestsFragement : Fragment() {
+import com.jama.kenyablooddonationsystem.R
+import com.jama.kenyablooddonationsystem.ui.home.adapters.AcceptedRequestAdapter
+import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
+import kotlinx.android.synthetic.main.accepted_requests_fragement.view.*
+
+class AcceptedRequestsFragment : Fragment() {
 
     private lateinit var fragementView: View
-    private lateinit var requestFragmentViewModel: RequestsFragmentViewModel
+    private lateinit var requestsViewModel: RequestsViewModel
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var requestsAdapter: RequestsAdapter
+    private lateinit var acceptedRequestAdapter: AcceptedRequestAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         fragementView = inflater.inflate(R.layout.fragment_requests, container, false)
-        requestFragmentViewModel = activity.run {
-            ViewModelProviders.of(this!!)[RequestsFragmentViewModel::class.java]
+        requestsViewModel = activity.run {
+            ViewModelProviders.of(this!!)[RequestsViewModel::class.java]
         }
 
-        requestsAdapter = RequestsAdapter(mutableListOf(), fragementView.context)
+        acceptedRequestAdapter = AcceptedRequestAdapter(mutableListOf(), fragementView.context)
         viewManager = LinearLayoutManager(fragementView.context)
-        viewAdapter = requestsAdapter
+        viewAdapter = acceptedRequestAdapter
 
         fragementView.recyclerView.apply {
             layoutManager = viewManager
@@ -44,12 +45,12 @@ class RequestsFragement : Fragment() {
             addItemDecoration(DividerItemDecoration(fragementView.context, DividerItemDecoration.VERTICAL))
         }
 
-        requestFragmentViewModel.requestModelList.observe(this, Observer {
-            requestsAdapter.insertData(it)
-            recyclerView.smoothScrollToPosition(0)
+        requestsViewModel.acceptedRequestModelList.observe(this, Observer {
+            acceptedRequestAdapter.insertData(it)
+            fragementView.recyclerView.smoothScrollToPosition(0)
         })
 
-        requestFragmentViewModel.listenToRequests(activity!!)
+        requestsViewModel.getAcceptedRequests()
 
         return fragementView
     }

@@ -7,7 +7,7 @@ import android.os.Bundle
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
 import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
-import com.jama.kenyablooddonationsystem.utils.LeafletWebviewClient
+import com.jama.kenyablooddonationsystem.services.LeafletWebviewClient
 import kotlinx.android.synthetic.main.activity_request.*
 import android.view.View
 import androidx.lifecycle.Observer
@@ -35,7 +35,11 @@ class RequestActivity : AppCompatActivity() {
 
         webview.settings.javaScriptEnabled = true
         webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
-        webview.webViewClient = LeafletWebviewClient(webview, requestModel.lat, requestModel.lng)
+        webview.webViewClient = LeafletWebviewClient(
+            webview,
+            requestModel.lat,
+            requestModel.lng
+        )
 
         requestsViewModel.getUserLocation(applicationContext)
         requestsViewModel.viewedRequest(requestModel.key)

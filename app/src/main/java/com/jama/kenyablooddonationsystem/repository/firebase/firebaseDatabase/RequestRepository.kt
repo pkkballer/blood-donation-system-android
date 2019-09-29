@@ -16,10 +16,13 @@ class RequestRepository {
     private val authRepository = AuthenticationRepository()
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseRequestRef = database.getReference("requests")
+    private val databaseAcceptedRequestRef = database.getReference("acceptedRequests")
     private val regexUtil = RegexUtil()
     private lateinit var geoFire: GeoFire
     private lateinit var geoQuery: GeoQuery
     var requestModelList: MutableLiveData<MutableList<RequestModel>> =
+        MutableLiveData(mutableListOf())
+    var acceptedRequestModelList: MutableLiveData<MutableList<RequestModel>> =
         MutableLiveData(mutableListOf())
     var showSnackbar: MutableLiveData<String> = MutableLiveData("")
     var showProgressbar: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -34,26 +37,38 @@ class RequestRepository {
         return database.getReference("geofire/request/${bloodType}")
     }
 
-    fun getRequest(key: String) {
+    private fun acceptedReqRef(): DatabaseReference {
+        val uid = authRepository.getFirebaseUser()?.uid
+        return databaseAcceptedRequestRef.child(uid!!)
+    }
+
+    fun getRequest(key: String, isRequest: Boolean) {
         val requestRef = databaseRequestRef.child(key)
         requestRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
+            override fun onCancelled(p0: DatabaseError) {
+                println("Accepted ${p0.message}")
+            }
             override fun onDataChange(p0: DataSnapshot) {
                 val requestModel = p0.getValue(RequestModel::class.java)
                 if (requestModel!!.active) {
-                    requestModelList.value!!.add(requestModel)
-                    requestModelList.notifyObserver()
+                    if (isRequest) {
+                        requestModelList.value!!.add(requestModel)
+                        requestModelList.notifyObserver()
+                    } else {
+                        acceptedRequestModelList.value!!.add(requestModel)
+                        acceptedRequestModelList.notifyObserver()
+                    }
                 }
             }
         })
     }
 
-    fun listenToRequests(latlang: Map<String, Double>) {
+    fun listenToRequests(latlng: Map<String, Double>) {
         geoFire = GeoFire(requestRef())
-        geoQuery = geoFire.queryAtLocation(GeoLocation(latlang["lng"]!!, latlang["lat"]!!), 10.0)
+        geoQuery = geoFire.queryAtLocation(GeoLocation(latlng["lng"]!!, latlng["lat"]!!), 10.0)
         geoQuery.addGeoQueryEventListener(object : GeoQueryEventListener {
             override fun onKeyEntered(key: String, location: GeoLocation) {
-                getRequest(key)
+                getRequest(key, true)
             }
 
             override fun onKeyExited(key: String) {}
@@ -65,6 +80,20 @@ class RequestRepository {
             override fun onGeoQueryError(error: DatabaseError) {
                 System.err.println("Geofire There was an error with this query: $error")
             }
+        })
+    }
+
+    fun getAcceptedRequests() {
+        acceptedRequestModelList.value = mutableListOf()
+        acceptedReqRef().addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach {
+                    getRequest(it.key!!, false)
+                }
+            }
+
         })
     }
 
@@ -82,14 +111,9 @@ class RequestRepository {
         })
     }
 
-    private fun acceptedRequestRef(): DatabaseReference {
-        val uid = authRepository.getFirebaseUser()?.uid
-        return database.getReference("acceptedRequests/$uid")
-    }
-
     fun acceptRequest(key: String) {
         showProgressbar(true)
-        acceptedRequestRef().child(key).addListenerForSingleValueEvent(object : ValueEventListener {
+        acceptedReqRef().child(key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -97,7 +121,7 @@ class RequestRepository {
                     showSnackbar("You have already accepted this request, please visit the hospital to donate blood")
                     showProgressbar(false)
                 } else {
-                    acceptedRequestRef().child(key).setValue(true).addOnCompleteListener {
+                    acceptedReqRef().child(key).setValue(true).addOnCompleteListener {
                         if (it.isSuccessful) {
                             incrementAcceptedRequest(key)
                         }
