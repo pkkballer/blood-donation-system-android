@@ -25,6 +25,9 @@ class RequestsViewModel: ViewModel() {
     val showProgressbar: LiveData<Boolean> = Transformations.map(requestRepository.showProgressbar) {
         it
     }
+    val closeQrCode: LiveData<Boolean> = Transformations.map(requestRepository.closeQrCode) {
+        it
+    }
     private var callListenRequests = true
 
     fun listenToRequests(fragmentActivity: FragmentActivity) {
@@ -39,6 +42,12 @@ class RequestsViewModel: ViewModel() {
 
     fun getAcceptedRequests() {
         requestRepository.getAcceptedRequests()
+    }
+
+    fun registerDonation(requestModel: RequestModel) {
+        viewModelScope.launch {
+            requestRepository.registerDonation(requestModel)
+        }
     }
 
     fun viewedRequest(key: String) {

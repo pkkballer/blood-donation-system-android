@@ -2,6 +2,7 @@ package com.jama.kenyablooddonationsystem.ui.qrCodeScanner
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -12,17 +13,30 @@ import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.jama.kenyablooddonationsystem.R
+import com.jama.kenyablooddonationsystem.models.RequestModel
 import com.jama.kenyablooddonationsystem.services.QrCodeAnalyzer
+import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlinx.android.synthetic.main.activity_qrcode_scanner.*
 
 class QRCodeScannerActivity : AppCompatActivity() {
 
     private val PERMISSIONS_REQUEST_CAMERA = 1
+    private lateinit var requestModel: RequestModel
+    private lateinit var requestsViewModel: RequestsViewModel
+    private var closeQrCode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcode_scanner)
+
+        requestModel = intent.getSerializableExtra("request") as RequestModel
+
+        requestsViewModel = run {
+            ViewModelProviders.of(this)[RequestsViewModel::class.java]
+        }
 
         checkIfHasPermissions()
 
@@ -42,6 +56,13 @@ class QRCodeScannerActivity : AppCompatActivity() {
         }
 
         window.attributes = params
+
+        requestsViewModel.closeQrCode.observe(this, Observer {
+            if (it) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        })
 
     }
 
@@ -72,7 +93,15 @@ class QRCodeScannerActivity : AppCompatActivity() {
 
         val qrCodeAnalyzer = QrCodeAnalyzer {barCodes ->
             barCodes.forEach {
-                println("QRCODE ${it.rawValue}")
+                if (!closeQrCode) {
+                    if (requestModel.uid == it.rawValue) {
+                        println("qrcode passed")
+                        requestsViewModel.registerDonation(requestModel)
+                        closeQrCode = true
+                    } else {
+                        println("qrcode failed")
+                    }
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 package com.jama.kenyablooddonationsystem.models
 
+import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
 import java.io.Serializable
 
 data class RequestModel(
@@ -20,4 +21,18 @@ data class RequestModel(
     var accepted: Int = 0
 
 
-): Serializable
+): Serializable {
+
+    fun registerDonation(): Map<String, Any> {
+        return mapOf(
+            "hname" to hname,
+            "placeOfDonation" to place,
+            "lastDonated" to DateTimeUtil().getDateNow(),
+            "latlng" to mapOf(
+                "lat" to lat,
+                "lng" to lng
+            )
+        )
+    }
+
+}

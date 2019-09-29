@@ -6,10 +6,12 @@ import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQuery
 import com.firebase.geofire.GeoQueryEventListener
 import com.google.firebase.database.*
+import com.jama.kenyablooddonationsystem.models.DonationDetailsModel
 import com.jama.kenyablooddonationsystem.models.RequestModel
 import com.jama.kenyablooddonationsystem.repository.firebase.firebaseAuth.AuthenticationRepository
 import com.jama.kenyablooddonationsystem.utils.RegexUtil
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 class RequestRepository {
 
@@ -17,6 +19,7 @@ class RequestRepository {
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseRequestRef = database.getReference("requests")
     private val databaseAcceptedRequestRef = database.getReference("acceptedRequests")
+    private val databaseDonationDetiailsRef = database.getReference("donationDetails")
     private val regexUtil = RegexUtil()
     private lateinit var geoFire: GeoFire
     private lateinit var geoQuery: GeoQuery
@@ -26,6 +29,8 @@ class RequestRepository {
         MutableLiveData(mutableListOf())
     var showSnackbar: MutableLiveData<String> = MutableLiveData("")
     var showProgressbar: MutableLiveData<Boolean> = MutableLiveData(false)
+    val closeQrCode: MutableLiveData<Boolean> = MutableLiveData(false)
+
 
     private fun <T> MutableLiveData<T>.notifyObserver() {
         this.value = this.value
@@ -40,6 +45,11 @@ class RequestRepository {
     private fun acceptedReqRef(): DatabaseReference {
         val uid = authRepository.getFirebaseUser()?.uid
         return databaseAcceptedRequestRef.child(uid!!)
+    }
+
+    private fun donationDetailsRef(): DatabaseReference {
+        val uid = authRepository.getFirebaseUser()?.uid
+        return databaseDonationDetiailsRef.child(uid!!)
     }
 
     fun getRequest(key: String, isRequest: Boolean) {
@@ -97,6 +107,12 @@ class RequestRepository {
         })
     }
 
+    suspend fun registerDonation(requestModel: RequestModel) {
+        donationDetailsRef().updateChildren(requestModel.registerDonation()).await()
+        incrementDonationCount()
+
+    }
+
     fun viewedRequest(key: String) {
         databaseRequestRef.child(key).runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {}
@@ -149,6 +165,25 @@ class RequestRepository {
         })
     }
 
+    private fun incrementDonationCount() {
+        donationDetailsRef().runTransaction(object : Transaction.Handler {
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                if (p0 != null) {
+                    println("q")
+                }
+            }
+
+            override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                val donationDetail = mutableData.getValue(DonationDetailsModel::class.java)
+                    ?: return Transaction.success(mutableData)
+                donationDetail.noOfDonations++
+                mutableData.value = donationDetail
+                closeQrCode(true)
+                return Transaction.success(mutableData)
+            }
+        })
+    }
+
     fun showSnackbar(text: String) {
         CoroutineScope(Dispatchers.Main).launch {
             showSnackbar.value = text
@@ -158,6 +193,12 @@ class RequestRepository {
     fun showProgressbar(show: Boolean) {
         CoroutineScope(Dispatchers.Main).launch {
             showProgressbar.value = show
+        }
+    }
+
+    fun closeQrCode(close: Boolean) {
+        CoroutineScope(Dispatchers.Main).launch {
+            closeQrCode.value = close
         }
     }
 

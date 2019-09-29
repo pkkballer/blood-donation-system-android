@@ -1,6 +1,7 @@
 package com.jama.kenyablooddonationsystem.ui.request
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Location
@@ -23,7 +24,7 @@ import kotlin.math.roundToInt
 class RequestActivity : AppCompatActivity() {
 
     private lateinit var requestModel: RequestModel
-    private var isAccepted: Boolean? = null
+    private var isAccepted: Boolean? = false
     private lateinit var requestsViewModel: RequestsViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -32,12 +33,20 @@ class RequestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_request)
 
         requestModel = intent.getSerializableExtra("request") as RequestModel
-        isAccepted = intent.getBooleanExtra("dsfdfdf", false)
+        isAccepted = intent.getBooleanExtra("accepted", false)
 
         supportActionBar!!.title = requestModel.hname
 
         requestsViewModel = run {
             ViewModelProviders.of(this)[RequestsViewModel::class.java]
+        }
+
+        if (isAccepted as Boolean) {
+            buttonAcceptRequest.visibility = View.GONE
+            buttonRegister.visibility = View.VISIBLE
+        } else {
+            buttonAcceptRequest.visibility = View.VISIBLE
+            buttonRegister.visibility = View.GONE
         }
 
         webview.settings.javaScriptEnabled = true
@@ -88,7 +97,9 @@ class RequestActivity : AppCompatActivity() {
         }
 
         buttonRegister.setOnClickListener {
-            startActivity(Intent(this, QRCodeScannerActivity::class.java))
+            val intent = Intent(this, QRCodeScannerActivity::class.java)
+            intent.putExtra("request", requestModel)
+            startActivityForResult(intent, 1)
         }
 
         textViewBloodType.text = requestModel.bloodType
@@ -99,5 +110,13 @@ class RequestActivity : AppCompatActivity() {
         textViewReason.text = requestModel.requestReason
         textViewHname.text = requestModel.hname
         textViewPlace.text = requestModel.place
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Snackbar.make(buttonRegister.rootView, "Successfully registered donation", Snackbar.LENGTH_SHORT).show()
+            buttonRegister.isEnabled = false
+        }
     }
 }
