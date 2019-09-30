@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.ui.request.adapters.AcceptedRequestAdapter
+import com.jama.kenyablooddonationsystem.ui.home.adapters.AcceptedRequestAdapter
 import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlinx.android.synthetic.main.accepted_requests_fragement.view.*
 

@@ -1,4 +1,4 @@
-package com.jama.kenyablooddonationsystem.ui.event.adapters
+package com.jama.kenyablooddonationsystem.ui.home.adapters
 
 import android.content.Context
 import android.content.Intent
