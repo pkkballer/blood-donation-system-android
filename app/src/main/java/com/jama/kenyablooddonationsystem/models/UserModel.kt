@@ -1,7 +1,7 @@
 package com.jama.kenyablooddonationsystem.models
 
 data class UserModel(
-    var fullNames: String = "",
+    var fullName: String = "",
     var email: String = "",
     var password: String = "",
     var nationalId: String = "",
@@ -12,7 +12,7 @@ data class UserModel(
 ) {
     fun toMap(): Map<String, Any> {
         return mapOf(
-            "fullName" to fullNames,
+            "fullName" to fullName,
             "email" to email,
             "password" to password,
             "nationalId" to nationalId,
@@ -26,7 +26,7 @@ data class UserModel(
 
     fun toDonorDetails(): Map<String, Any> {
         return mapOf(
-            "fullName" to fullNames,
+            "fullName" to fullName,
             "bloodType" to bloodType,
             "nationalId" to nationalId,
             "noOfDonations" to 0,

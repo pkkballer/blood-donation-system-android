@@ -5,16 +5,48 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 import com.jama.kenyablooddonationsystem.R
+import com.jama.kenyablooddonationsystem.viewModels.profile.ProfileViewModel
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 class ProfileFragment : Fragment() {
+
+    private lateinit var fragementView: View
+    private lateinit var profileViewModel: ProfileViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        fragementView = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        profileViewModel = activity.run {
+            ViewModelProviders.of(this!!)[ProfileViewModel::class.java]
+        }
+
+        profileViewModel.userModel.observe(this, Observer {
+            fragementView.textViewFullNames.text = it.fullName
+            fragementView.textViewGender.text = it.gender
+            fragementView.textViewEmail.text = it.email
+            fragementView.textViewPhone.text = it.phone
+            fragementView.textViewNationaID.text = it.nationalId
+            fragementView.textViewBloodType.text = it.bloodType
+        })
+
+        profileViewModel.donationDetailsModel.observe(this, Observer {
+            fragementView.textViewNoOFDonations.text = it.noOfDonations.toString()
+            fragementView.textViewLastDonated.text = it.lastDonated
+            fragementView.textViewHname.text = it.hname
+            fragementView.textViewPlace.text = it.placeOfDonation
+        })
+
+        profileViewModel.getUserProfile()
+
+        return  fragementView
     }
 }
