@@ -6,13 +6,19 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.jama.kenyablooddonationsystem.models.UserModel
 import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.AuthRepository
+import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.NotificationRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class AuthenticationRepository {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val notificationRepository = NotificationRepository()
 
     suspend fun signIn(email: String, password: String): AuthResult? {
+        notificationRepository.signUpForNotifications()
         return auth.signInWithEmailAndPassword(email, password).await()
     }
 
@@ -22,6 +28,7 @@ class AuthenticationRepository {
         firebaseUser.user!!.updateProfile(profileUpdate).await()
         userModel.uid = firebaseUser.user!!.uid
         val userRepository = AuthRepository(userModel)
+        notificationRepository.signUpForNotifications()
         userRepository.createUserRef()
         userRepository.createDonorDetails()
     }
@@ -35,6 +42,9 @@ class AuthenticationRepository {
     }
 
     fun signOut() {
-        auth.signOut()
+        CoroutineScope(Dispatchers.IO).launch {
+            notificationRepository.signOutOfNotifications()
+            auth.signOut()
+        }
     }
 }

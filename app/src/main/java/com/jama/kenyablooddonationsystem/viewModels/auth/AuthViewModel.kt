@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuthException
 import com.jama.kenyablooddonationsystem.models.UserModel
 import com.jama.kenyablooddonationsystem.repository.firebase.firebaseAuth.AuthenticationRepository
+import com.jama.kenyablooddonationsystem.repository.firebase.firebaseDatabase.NotificationRepository
 import kotlinx.coroutines.launch
 import java.lang.RuntimeException
 
