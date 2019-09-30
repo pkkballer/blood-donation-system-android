@@ -1,4 +1,4 @@
-package com.jama.kenyablooddonationsystem.ui.home.adapters
+package com.jama.kenyablooddonationsystem.ui.request.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -23,7 +23,9 @@ class RequestsAdapter(private var requests: MutableList<RequestModel>, private v
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
             .inflate(R.layout.requests_item, parent, false)
-        return RequestViewHolder(layoutInflater)
+        return RequestViewHolder(
+            layoutInflater
+        )
     }
 
     override fun onBindViewHolder(holder: RequestViewHolder, position: Int) {

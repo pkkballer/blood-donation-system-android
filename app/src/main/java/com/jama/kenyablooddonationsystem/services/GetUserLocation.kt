@@ -11,7 +11,7 @@ class GetUserLocation(private val fragmentActivity: FragmentActivity? = null, pr
 
     suspend fun getLastLocation(): Map<String, Double> {
         fusedLocationClient = if (fragmentActivity != null ) {
-            LocationServices.getFusedLocationProviderClient(fragmentActivity!!)
+            LocationServices.getFusedLocationProviderClient(fragmentActivity)
         } else {
             LocationServices.getFusedLocationProviderClient(context!!)
         }

@@ -1,24 +1,30 @@
 package com.jama.kenyablooddonationsystem.ui.request
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import com.jama.kenyablooddonationsystem.R
 import com.jama.kenyablooddonationsystem.models.RequestModel
 import com.jama.kenyablooddonationsystem.utils.DateTimeUtil
-import com.jama.kenyablooddonationsystem.utils.LeafletWebviewClient
+import com.jama.kenyablooddonationsystem.services.LeafletWebviewClient
 import kotlinx.android.synthetic.main.activity_request.*
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.jama.kenyablooddonationsystem.ui.qrCodeScanner.QRCodeScannerActivity
 import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlin.math.roundToInt
 
 class RequestActivity : AppCompatActivity() {
 
-    lateinit var requestModel: RequestModel
+    private lateinit var requestModel: RequestModel
+    private var isAccepted: Boolean? = false
     private lateinit var requestsViewModel: RequestsViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -27,15 +33,29 @@ class RequestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_request)
 
         requestModel = intent.getSerializableExtra("request") as RequestModel
+        isAccepted = intent.getBooleanExtra("accepted", false)
+
         supportActionBar!!.title = requestModel.hname
 
         requestsViewModel = run {
             ViewModelProviders.of(this)[RequestsViewModel::class.java]
         }
 
+        if (isAccepted as Boolean) {
+            buttonAcceptRequest.visibility = View.GONE
+            buttonRegister.visibility = View.VISIBLE
+        } else {
+            buttonAcceptRequest.visibility = View.VISIBLE
+            buttonRegister.visibility = View.GONE
+        }
+
         webview.settings.javaScriptEnabled = true
         webview.loadUrl("file:///android_asset/leaflet/leaflet.html")
-        webview.webViewClient = LeafletWebviewClient(webview, requestModel.lat, requestModel.lng)
+        webview.webViewClient = LeafletWebviewClient(
+            webview,
+            requestModel.lat,
+            requestModel.lng
+        )
 
         requestsViewModel.getUserLocation(applicationContext)
         requestsViewModel.viewedRequest(requestModel.key)
@@ -76,6 +96,12 @@ class RequestActivity : AppCompatActivity() {
             requestsViewModel.acceptRequest(requestModel.key)
         }
 
+        buttonRegister.setOnClickListener {
+            val intent = Intent(this, QRCodeScannerActivity::class.java)
+            intent.putExtra("request", requestModel)
+            startActivityForResult(intent, 1)
+        }
+
         textViewBloodType.text = requestModel.bloodType
         textViewFullName.text = requestModel.recepientName
         val dateTimeUtil = DateTimeUtil()
@@ -84,5 +110,13 @@ class RequestActivity : AppCompatActivity() {
         textViewReason.text = requestModel.requestReason
         textViewHname.text = requestModel.hname
         textViewPlace.text = requestModel.place
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Snackbar.make(buttonRegister.rootView, "Successfully registered donation", Snackbar.LENGTH_SHORT).show()
+            buttonRegister.isEnabled = false
+        }
     }
 }

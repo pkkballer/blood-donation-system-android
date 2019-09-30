@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.ui.home.adapters.EventAdapter
+import com.jama.kenyablooddonationsystem.ui.event.adapters.EventAdapter
 import com.jama.kenyablooddonationsystem.viewModels.event.EventViewModel
 import kotlinx.android.synthetic.main.fragment_requests.*
 import kotlinx.android.synthetic.main.fragment_requests.view.recyclerView
@@ -35,7 +35,10 @@ class EventsFragment : Fragment() {
             ViewModelProviders.of(this!!)[EventViewModel::class.java]
         }
 
-        eventAdapter = EventAdapter(mutableListOf(), fragementView.context)
+        eventAdapter = EventAdapter(
+            mutableListOf(),
+            fragementView.context
+        )
         viewManager = LinearLayoutManager(fragementView.context)
         viewAdapter = eventAdapter
 

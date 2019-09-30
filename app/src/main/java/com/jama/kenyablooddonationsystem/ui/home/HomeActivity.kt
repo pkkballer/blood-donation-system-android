@@ -30,7 +30,7 @@ open class HomeActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
         tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_home_red_24dp)
         tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_event_red_24dp)
-        tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_notifications_red_24dp)
+        tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_done_white_24dp)
         tabLayout.getTabAt(3)?.setIcon(R.drawable.ic_person_red_24dp)
     }
 

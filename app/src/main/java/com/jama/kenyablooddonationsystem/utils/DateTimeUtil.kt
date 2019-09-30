@@ -21,4 +21,11 @@ class DateTimeUtil {
         return formatter.format(calendar.time)
     }
 
+    fun getDateNow(): String {
+        val formatter = SimpleDateFormat("d, MMM y")
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        return formatter.format(calendar.time)
+    }
+
 }

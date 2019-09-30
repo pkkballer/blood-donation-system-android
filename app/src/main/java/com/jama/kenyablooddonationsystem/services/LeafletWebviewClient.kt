@@ -1,4 +1,4 @@
-package com.jama.kenyablooddonationsystem.utils
+package com.jama.kenyablooddonationsystem.services
 
 import android.webkit.WebView
 import android.webkit.WebViewClient
