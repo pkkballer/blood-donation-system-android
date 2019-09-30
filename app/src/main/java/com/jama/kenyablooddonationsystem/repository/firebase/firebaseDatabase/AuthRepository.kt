@@ -4,7 +4,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.jama.kenyablooddonationsystem.models.UserModel
 import kotlinx.coroutines.tasks.await
 
-class UserRepository(private val userModel: UserModel) {
+class AuthRepository(private val userModel: UserModel) {
 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val databaseUserRef = database.getReference("users")

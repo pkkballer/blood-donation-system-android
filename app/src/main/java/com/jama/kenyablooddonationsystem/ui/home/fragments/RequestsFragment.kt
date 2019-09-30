@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.ui.request.adapters.RequestsAdapter
+import com.jama.kenyablooddonationsystem.ui.home.adapters.RequestsAdapter
 import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlinx.android.synthetic.main.fragment_requests.view.*
 
