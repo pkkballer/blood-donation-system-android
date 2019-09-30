@@ -12,8 +12,8 @@ class HomeActivityAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when(position) {
             0 -> RequestsFragment()
-            1 -> EventsFragment()
             2 -> AcceptedRequestsFragment()
+            1 -> EventsFragment()
             3 -> ProfileFragment()
             else -> RequestsFragment()
         }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.jama.kenyablooddonationsystem.R
+import com.jama.kenyablooddonationsystem.services.LeafletWebviewClient
 import com.jama.kenyablooddonationsystem.viewModels.profile.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
@@ -29,6 +30,8 @@ class ProfileFragment : Fragment() {
             ViewModelProviders.of(this!!)[ProfileViewModel::class.java]
         }
 
+        fragementView.webView.settings.javaScriptEnabled = true
+
         profileViewModel.userModel.observe(this, Observer {
             fragementView.textViewFullNames.text = it.fullName
             fragementView.textViewGender.text = it.gender
@@ -43,9 +46,12 @@ class ProfileFragment : Fragment() {
             fragementView.textViewLastDonated.text = it.lastDonated
             fragementView.textViewHname.text = it.hname
             fragementView.textViewPlace.text = it.placeOfDonation
+            fragementView.webView.loadUrl("file:///android_asset/leaflet/leaflet.html")
+            fragementView.webView.webViewClient = LeafletWebviewClient(fragementView.webView,
+                it.latlng["lat"]!!,
+                it.latlng["lng"]!!
+            )
         })
-
-        profileViewModel.getUserProfile()
 
         return  fragementView
     }

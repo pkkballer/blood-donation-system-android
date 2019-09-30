@@ -20,7 +20,11 @@ class ProfileViewModel: ViewModel() {
         it
     }
 
-    fun getUserProfile() {
+    init {
+        getUserProfile()
+    }
+
+    private fun getUserProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             profileRepository.getUserProfile()
         }
