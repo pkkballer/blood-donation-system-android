@@ -44,7 +44,7 @@ class AuthenticationRepository {
     fun signOut() {
         CoroutineScope(Dispatchers.IO).launch {
             notificationRepository.signOutOfNotifications()
-            auth.signOut()
         }
+        auth.signOut()
     }
 }

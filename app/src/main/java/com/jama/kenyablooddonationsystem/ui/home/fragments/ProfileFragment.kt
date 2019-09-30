@@ -53,6 +53,8 @@ class ProfileFragment : Fragment() {
             )
         })
 
+        profileViewModel.getUserProfile()
+
         return  fragementView
     }
 }
