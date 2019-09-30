@@ -5,6 +5,7 @@ import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
 import com.firebase.geofire.GeoQuery
 import com.firebase.geofire.GeoQueryEventListener
+import com.google.firebase.FirebaseException
 import com.google.firebase.database.*
 import com.jama.kenyablooddonationsystem.models.DonationDetailsModel
 import com.jama.kenyablooddonationsystem.models.RequestModel
@@ -30,7 +31,6 @@ class RequestRepository {
     var showSnackbar: MutableLiveData<String> = MutableLiveData("")
     var showProgressbar: MutableLiveData<Boolean> = MutableLiveData(false)
     val closeQrCode: MutableLiveData<Boolean> = MutableLiveData(false)
-
 
     private fun <T> MutableLiveData<T>.notifyObserver() {
         this.value = this.value
@@ -108,8 +108,13 @@ class RequestRepository {
     }
 
     suspend fun registerDonation(requestModel: RequestModel) {
-        donationDetailsRef().updateChildren(requestModel.registerDonation()).await()
-        incrementDonationCount()
+        try {
+            donationDetailsRef().updateChildren(requestModel.registerDonation()).await()
+            acceptedReqRef().child(requestModel.key).removeValue().await()
+            incrementDonationCount()
+        } catch (e: FirebaseException) {
+            println("FIREBASE error -> ${e.message}")
+        }
 
     }
 
@@ -167,11 +172,7 @@ class RequestRepository {
 
     private fun incrementDonationCount() {
         donationDetailsRef().runTransaction(object : Transaction.Handler {
-            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
-                if (p0 != null) {
-                    println("q")
-                }
-            }
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {}
 
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
                 val donationDetail = mutableData.getValue(DonationDetailsModel::class.java)
@@ -179,6 +180,7 @@ class RequestRepository {
                 donationDetail.noOfDonations++
                 mutableData.value = donationDetail
                 closeQrCode(true)
+
                 return Transaction.success(mutableData)
             }
         })

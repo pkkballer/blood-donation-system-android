@@ -1,4 +1,4 @@
-package com.jama.kenyablooddonationsystem.ui.home.adapters
+package com.jama.kenyablooddonationsystem.ui.event.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,9 @@ class EventAdapter(private var events: MutableList<EventModel>, private val cont
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
             .inflate(R.layout.events_item, parent, false)
-        return EventViewHolder(layoutInflater)
+        return EventViewHolder(
+            layoutInflater
+        )
     }
 
     override fun getItemCount(): Int {

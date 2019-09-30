@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.jama.kenyablooddonationsystem.R
-import com.jama.kenyablooddonationsystem.ui.home.adapters.AcceptedRequestAdapter
+import com.jama.kenyablooddonationsystem.ui.request.adapters.AcceptedRequestAdapter
 import com.jama.kenyablooddonationsystem.viewModels.request.RequestsViewModel
 import kotlinx.android.synthetic.main.accepted_requests_fragement.view.*
 
@@ -36,7 +35,11 @@ class AcceptedRequestsFragment : Fragment() {
             ViewModelProviders.of(this!!)[RequestsViewModel::class.java]
         }
 
-        acceptedRequestAdapter = AcceptedRequestAdapter(mutableListOf(), fragementView.context)
+        acceptedRequestAdapter =
+            AcceptedRequestAdapter(
+                mutableListOf(),
+                fragementView.context
+            )
         viewManager = LinearLayoutManager(fragementView.context)
         viewAdapter = acceptedRequestAdapter
 
@@ -49,6 +52,10 @@ class AcceptedRequestsFragment : Fragment() {
         requestsViewModel.acceptedRequestModelList.observe(this, Observer {
             acceptedRequestAdapter.insertData(it)
             fragementView.recyclerView.smoothScrollToPosition(0)
+        })
+
+        requestsViewModel.closeQrCode.observe(this, Observer {
+            println("this is $it")
         })
 
         requestsViewModel.getAcceptedRequests()
