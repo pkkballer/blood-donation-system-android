@@ -75,7 +75,7 @@ class RequestRepository {
 
     fun listenToRequests(latlng: Map<String, Double>) {
         geoFire = GeoFire(requestRef())
-        geoQuery = geoFire.queryAtLocation(GeoLocation(latlng["lng"]!!, latlng["lat"]!!), 10.0)
+        geoQuery = geoFire.queryAtLocation(GeoLocation(latlng["lat"]!!, latlng["lng"]!!), 10.0)
         geoQuery.addGeoQueryEventListener(object : GeoQueryEventListener {
             override fun onKeyEntered(key: String, location: GeoLocation) {
                 getRequest(key, true)
